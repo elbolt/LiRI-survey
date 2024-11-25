@@ -1,2 +1,2 @@
-streamlit==1.25.0   # Or the latest version you're using
-pandas               # For data manipulation
+streamlit
+pandas
