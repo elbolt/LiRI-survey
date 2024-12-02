@@ -164,3 +164,4 @@ cython_debug/
 .ipynb
 test.py
 setup_streamlit_env.sh
+.streamlit
