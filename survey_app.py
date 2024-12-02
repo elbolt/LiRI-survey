@@ -2,20 +2,20 @@ import streamlit as st
 import sqlite3
 
 # Title of the app
-st.title('Survey on Statistical and data science consulting services at LiRI')
+st.title('Survey on Statistical and Data Science Consulting Services at LiRI')
 
 # Description
 st.write('We are conducting a survey to improve our services. Please help us by providing your feedback.')
 
 # Collect user information
-level_options = ['Bachelor', 'Master', 'PhD', 'Postdoc', 'Principal investigator or professor', 'other']
+level_options = ['Bachelor', 'Master', 'PhD', 'Postdoc', 'Principal investigator or professor', 'Other']
 level = st.radio('Please select your current level of study or position:', level_options)
-if level == 'other':
+if level == 'Other':
     level = st.text_input('Please specify your level of study or position:')
     if len(level) < 3:
         st.warning('Please enter a valid level of study or position.')
 
-# Add yes no question
+# Add yes/no question
 st.write('Are you associated with the University of Zurich?')
 associated = st.radio('Please select:', ['Yes', 'No'])
 
@@ -23,19 +23,37 @@ researchfield = st.text_input('What is your field of study?')
 if len(researchfield) < 3:
     st.warning('Please enter a valid field of research.')
 
-# New page
-
-
 # Submit button
 if st.button('Submit'):
-    # Show confirmation
-    st.success(f'Thank you for you feedback!')
-    # Save data to a file (append mode)
+    if len(level) < 3 or len(researchfield) < 3:
+        st.error("Please fill in all fields correctly.")
+    else:
+        # Save data to the database
+        try:
+            # Use Streamlit secrets to get the database path
+            db_path = st.secrets["db"]["path"]
 
-    # Save data to a database
-    conn = sqlite3.connect('survey.db')
-    c = conn.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS survey (level TEXT, associated TEXT, researchfield TEXT)")
-    c.execute("INSERT INTO survey (level, associated, researchfield) VALUES (?, ?, ?)", (level, associated, researchfield))
-    conn.commit()
-    conn.close()
+            # Connect to SQLite database
+            conn = sqlite3.connect(db_path)
+            c = conn.cursor()
+
+            # Create table if it doesn't exist
+            c.execute("""
+                CREATE TABLE IF NOT EXISTS survey (
+                    level TEXT,
+                    associated TEXT,
+                    researchfield TEXT
+                )
+            """)
+
+            # Insert data into the table
+            c.execute("INSERT INTO survey (level, associated, researchfield) VALUES (?, ?, ?)", 
+                      (level, associated, researchfield))
+            conn.commit()
+            conn.close()
+
+            # Show confirmation
+            st.success('Thank you for your feedback!')
+
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
