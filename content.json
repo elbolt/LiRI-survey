@@ -1,0 +1,46 @@
+{
+    "workshop_goals": {
+      "label": "What should this power analysis workshop include for you?",
+      "options": [
+        "Basic concepts of power analysis",
+        "How to justify sample sizes in grants",
+        "Hands-on with tools (e.g., G*Power, R, Python)",
+        "Power analysis for mixed-effects models",
+        "How to report power analysis results"
+      ]
+    },
+    "analysis_types": {
+      "label": "What kind of statistical analyses do you typically conduct or plan to conduct — especially where you'd like to calculate power?",
+      "options": [
+        "t-tests (e.g., comparing two groups)",
+        "ANOVA or repeated-measures ANOVA",
+        "Correlation or regression (with one or more predictors)",
+        "Regression models with different outcome types (e.g., logistic regression)",
+        "Mixed-effects models (e.g., with random intercepts/slopes)",
+        "Classification models (e.g., predicting categories)",
+        "I’m not sure yet / just exploring"
+      ]
+    },
+    "tools_preference": {
+      "label": "What tool(s) do you use or plan to use for power analysis?",
+      "options": [
+        "G*Power",
+        "R (pwr, simr, custom simulations)",
+        "Python (statsmodels, Monte Carlo simulations)",
+        "Not sure / open to suggestions"
+      ]
+    },
+    "research_background": {
+      "label": "What is your primary research background?",
+      "options": [
+        "Linguistics",
+        "Language science / psycholinguistics",
+        "Cognitive science / neuroscience",
+        "Speech and hearing research / phonetics",
+        "Computational linguistics",
+        "Digital humanities",
+        "Social sciences",
+        "Other"
+      ]
+    }
+  }

@@ -162,7 +162,4 @@ cython_debug/
 # Mac
 .DS_Store
 .ipynb
-test.py
-setup_streamlit_env.sh
 .streamlit
-survey.db
