@@ -1,4 +1,4 @@
-# Power Analysis Workshop Survey
+# Power analysis workshop survey
 
 A simple Streamlit app for collecting input for a CLARIN-CH & LiRI workshop on statistical power analysis at [liri-clarin-power.streamlit.app](https://liri-clarin-power.streamlit.app)
 
