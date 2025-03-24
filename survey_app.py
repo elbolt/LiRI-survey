@@ -89,7 +89,7 @@ with st.form(key="survey_form"):
         if st.checkbox(item):
             analysis_types.append(item)
 
-    other_analysis = st.text_input("Other — please specify —", key="other_analysis")
+    other_analysis = st.text_input("Other — please specify", key="other_analysis")
     st.markdown(" ")
 
     if other_analysis:
@@ -140,7 +140,7 @@ with st.form(key="survey_form"):
         config["background"]["options"]
     )
 
-    other_background = st.text_input("Other", key="other_background")
+    other_background = st.text_input("Other — please specify", key="other_background")
 
     # Add manually specified 'Other' entry if selected
     if "Other" in background and other_background:

@@ -1,4 +1,4 @@
-**CLARIN-CH** and the **Statistics and Research Analytics team** at **LiRI** plan to host an online workshop on statistical power analysis on **June 6, 2025**, from **15:30 to 17:00**.
+**CLARIN-CH** and the **Statistics and Research Analytics team** at **LiRI** plan to host an online workshop on statistical power analysis on **June 16, 2025**, from **15:30 to 17:00**.
 
 Power analysis is a topic that frequently comes up in our consultations. This short workshop is intended for CLARIN-CH and LiRI-affiliated researchers, as well as anyone else interested. Its goal is to refresh your knowledge and provide a practical recipe for approaching power analysis in your next project — or, at the very least, to help you know where to turn for support when you need it.
 
