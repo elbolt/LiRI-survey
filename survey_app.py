@@ -39,7 +39,7 @@ with open("content.json", "r", encoding="utf-8") as f:
     config = json.load(f)
 
 # Display title and intro
-st.title("Survey: Power analysis workshop")
+st.title("CLARIN-CH & LiRI Online Workshop on Statistical Power Analysis")
 st.markdown(intro_text)
 
 # Inject CSS to hide Cmd/Ctrl+Enter hint on all text inputs
