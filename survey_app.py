@@ -108,7 +108,7 @@ with st.form(key="survey_form"):
 
     # Challenges
     st.subheader("Challenges")
-    st.caption("Any challenges you've faced with power analysis?")
+    st.caption("Are there any challenges you've faced with power analysis?")
 
     struggles = st.text_area("What challenges have you faced?", key="struggles", label_visibility="collapsed")
 
