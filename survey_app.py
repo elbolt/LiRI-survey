@@ -42,6 +42,19 @@ with open("content.json", "r", encoding="utf-8") as f:
 st.title("Survey: Power analysis workshop")
 st.markdown(intro_text)
 
+# Inject CSS to hide Cmd/Ctrl+Enter hint on all text inputs
+st.markdown(
+    """
+    <style>
+    div[data-testid="stTextArea"] div[data-testid="InputInstructions"],
+    div[data-testid="stTextInput"] div[data-testid="InputInstructions"] {
+        display: none;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Establish a Google Sheets connection
 conn = st.connection("gsheets", type=GSheetsConnection)
 
@@ -54,18 +67,18 @@ with st.form(key="survey_form"):
 
     # Workshop content
     st.subheader("Workshop content")
-    st.caption(config["workshop_goals"]["label"])
+    st.caption(config["workshop_content"]["label"])
 
-    workshop_goals = []
-    for item in config["workshop_goals"]["options"]:
+    workshop_content = []
+    for item in config["workshop_content"]["options"]:
         if st.checkbox(item):
-            workshop_goals.append(item)
+            workshop_content.append(item)
 
-    other_goal = st.text_input("Other (please specify)", key="other_goal")
-    if other_goal:
-        workshop_goals.append(other_goal)
-
+    other_goal = st.text_input("Other — please specify", key="other_goal")
     st.markdown(" ")
+
+    if other_goal:
+        workshop_content.append(other_goal)
 
     # Statistical analyses
     st.subheader("Statistical analyses")
@@ -76,20 +89,20 @@ with st.form(key="survey_form"):
         if st.checkbox(item):
             analysis_types.append(item)
 
-    other_analysis = st.text_input("Other (please specify)", key="other_analysis")
+    other_analysis = st.text_input("Other — please specify —", key="other_analysis")
+    st.markdown(" ")
+
     if other_analysis:
         analysis_types.append(other_analysis)
 
-    st.markdown(" ")
-
     # Tool preference
     st.subheader("Tool preference")
-    st.caption(config["tools_preference"]["label"])
+    st.caption(config["tools"]["label"])
 
-    tools_preference = []
-    for item in config["tools_preference"]["options"]:
+    tools = []
+    for item in config["tools"]["options"]:
         if st.checkbox(item):
-            tools_preference.append(item)
+            tools.append(item)
 
     st.markdown(" ")
 
@@ -105,7 +118,7 @@ with st.form(key="survey_form"):
     st.subheader("Session format preference")
     st.caption("Choose the option that best matches your preference for this short workshop.")
 
-    tech_detail = st.radio(
+    session_format = st.radio(
         "What kind of session would be most useful for you?",
         [
             "A practical, hands-on session with concrete examples and minimal technical theory",
@@ -113,28 +126,27 @@ with st.form(key="survey_form"):
             "A mix of both, if possible",
             "No strong preference"
         ],
-        key="tech_detail"
+        key="session_format"
     )
 
     st.markdown(" ")
 
     # Research background
     st.subheader("Research background")
-    st.caption(config["research_background"]["label"])
+    st.caption(config["background"]["label"])
 
-    research_background = st.selectbox(
-        "Select your primary research area",
-        config["research_background"]["options"],
-        index=None,
-        placeholder="Choose one"
+    background = st.multiselect(
+        "Select your research area(s)",
+        config["background"]["options"]
     )
 
-    other_background = st.text_input("If 'Other', please specify", key="other_background")
+    other_background = st.text_input("Other", key="other_background")
 
-    if research_background == "Other":
-        research_background = other_background
-
-    st.markdown(" ")
+    # Add manually specified 'Other' entry if selected
+    if "Other" in background and other_background:
+        background = [rb for rb in background if rb != "Other"]
+        background.append(other_background)
+        st.markdown(" ")
 
     # Takeaways
     st.subheader("Takeaways")
@@ -148,7 +160,7 @@ with st.form(key="survey_form"):
     st.subheader("Additional comments")
     st.caption("Anything else you'd like to include or suggest?")
 
-    extra_topics = st.text_area("Anything else?", key="extra_topics", label_visibility="collapsed")
+    comments = st.text_area("Anything else?", key="comments", label_visibility="collapsed")
 
     st.markdown(" ")
 
@@ -156,19 +168,19 @@ with st.form(key="survey_form"):
     submit_button = st.form_submit_button(label="Submit")
 
     if submit_button:
-        if not workshop_goals:
+        if not workshop_content:
             st.warning("Please select at least one topic.")
             st.stop()
 
         new_response = pd.DataFrame([{
-            "workshop_goals": ", ".join(workshop_goals),
-            "analysis_types": ", ".join(analysis_types),
-            "tools_preference": ", ".join(tools_preference),
+            "content": ", ".join(workshop_content),
+            "analyses": ", ".join(analysis_types),
+            "tools": ", ".join(tools),
             "struggles": struggles,
-            "session_format": tech_detail,
-            "research_background": research_background,
+            "format": session_format,
+            "background": background,
             "takeaways": takeaways,
-            "extra_topics": extra_topics
+            "comments": comments
         }])
 
         updated_df = pd.concat([existing_data, new_response], ignore_index=True)

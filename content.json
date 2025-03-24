@@ -1,5 +1,5 @@
 {
-    "workshop_goals": {
+    "workshop_content": {
       "label": "What should this power analysis workshop include for you?",
       "options": [
         "Basic concepts of power analysis",
@@ -21,7 +21,7 @@
         "I’m not sure yet / just exploring"
       ]
     },
-    "tools_preference": {
+    "tools": {
       "label": "What tool(s) do you use or plan to use for power analysis?",
       "options": [
         "G*Power",
@@ -30,7 +30,7 @@
         "Not sure / open to suggestions"
       ]
     },
-    "research_background": {
+    "background": {
       "label": "What is your primary research background?",
       "options": [
         "Linguistics",
