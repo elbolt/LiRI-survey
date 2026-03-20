@@ -25,10 +25,42 @@ Usage:
 Run with Streamlit, ensuring required files and Google Sheets connection are configured.
 
 """
+import os
+import json
 import streamlit as st
 import pandas as pd
-import json
-from streamlit_gsheets import GSheetsConnection
+import gspread
+from google.oauth2.service_account import Credentials
+
+
+class _EnvGSheetsConn:
+    """Gspread-backed connection built from environment variables (Posit Connect)."""
+
+    def __init__(self):
+        creds_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
+        scopes = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive",
+        ]
+        creds = Credentials.from_service_account_info(creds_info, scopes=scopes)
+        client = gspread.authorize(creds)
+        self._sheet = client.open_by_url(os.environ["GSHEETS_SPREADSHEET"])
+
+    def read(self, worksheet: str, ttl=None) -> pd.DataFrame:
+        ws = self._sheet.worksheet(worksheet)
+        return pd.DataFrame(ws.get_all_records())
+
+    def update(self, worksheet: str, data: pd.DataFrame):
+        ws = self._sheet.worksheet(worksheet)
+        ws.clear()
+        ws.update([data.columns.tolist()] + data.fillna("").values.tolist())
+
+
+def get_gsheets_conn():
+    if "GOOGLE_SERVICE_ACCOUNT_JSON" in os.environ:
+        return _EnvGSheetsConn()
+    from streamlit_gsheets import GSheetsConnection
+    return st.connection("gsheets", type=GSheetsConnection)
 
 # Load intro text from file
 with open("intro.txt", "r", encoding="utf-8") as file:
@@ -56,7 +88,7 @@ st.markdown(
 )
 
 # Establish a Google Sheets connection
-conn = st.connection("gsheets", type=GSheetsConnection)
+conn = get_gsheets_conn()
 
 # Fetch existing survey data
 existing_data = conn.read(worksheet="Responses", ttl=5)
