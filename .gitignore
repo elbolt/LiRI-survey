@@ -163,4 +163,4 @@ cython_debug/
 .DS_Store
 .ipynb
 .streamlit/secrets.toml
-.setup_env.sh
+setup_env.sh

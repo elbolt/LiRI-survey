@@ -6,7 +6,7 @@
     "entrypoint": "survey_app.py"
   },
   "python": {
-    "version": "3.11.15",
+    "version": "3.14.3",
     "package_manager": {
       "name": "pip",
       "version": "26.0.1",
