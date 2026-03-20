@@ -6,28 +6,19 @@
     "entrypoint": "survey_app.py"
   },
   "python": {
-    "version": "3.14.3",
+    "version": "3.13.3",
     "package_manager": {
       "name": "pip",
-      "version": "26.0.1",
+      "version": "25.1.1",
       "package_file": "requirements.txt"
     }
   },
   "files": {
-    "requirements.txt": {
-      "checksum": "899d3582a0b46179d291e146b6c8e780"
-    },
-    ".DS_Store": {
-      "checksum": "194577a7e20bdcc7afbb718f502c134c"
-    },
     ".gitignore": {
-      "checksum": "4c3742a4067e4f67e4ebc20ef4a61452"
+      "checksum": "8bd8882fe876d3857be22dcfdc84abef"
     },
     ".streamlit/config.toml": {
       "checksum": "367139cf1ae417428c62bebff9f604d8"
-    },
-    ".streamlit/secrets.toml": {
-      "checksum": "d7b59188366f5b17fdfe8318e17c22e3"
     },
     "README.md": {
       "checksum": "6b0b7225cf7ae8ac96adf0030dfd18b7"
@@ -38,11 +29,20 @@
     "intro.txt": {
       "checksum": "bae83243164c87390ad713e81fc991fe"
     },
+    "manifest.json": {
+      "checksum": "7ea65c7cf3c55ca0823f58092e211762"
+    },
+    "requirements.txt": {
+      "checksum": "899d3582a0b46179d291e146b6c8e780"
+    },
     "setup_env.sh": {
-      "checksum": "8b0653cbb3dd93715ca836f02a35a2ab"
+      "checksum": "8abf3a0ed99c0a89baf12ad12211449b"
     },
     "survey_app.py": {
       "checksum": "42354252e7742b74ab09e0258677fac5"
+    },
+    "write_manifest.py": {
+      "checksum": "447309986731de0e1ad1390f0d4192e0"
     }
   }
 }
