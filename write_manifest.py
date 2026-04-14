@@ -22,7 +22,6 @@ def pip_version() -> str:
         [sys.executable, "-m", "pip", "--version"],
         capture_output=True, text=True
     )
-    # output looks like: "pip 26.0.1 from ..."
     return result.stdout.split()[1]
 
 
