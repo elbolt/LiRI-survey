@@ -222,7 +222,7 @@ with st.form(key="survey_form"):
             "tools": ", ".join(tools),
             "struggles": struggles,
             "format": session_format,
-            "background": background,
+            "background": ", ".join(background),
             "takeaways": takeaways,
             "comments": comments
         }])
