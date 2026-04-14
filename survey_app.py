@@ -51,17 +51,32 @@ class _EnvGSheetsConn:
         ws = self._sheet.worksheet(worksheet)
         return pd.DataFrame(ws.get_all_records())
 
-    def update(self, worksheet: str, data: pd.DataFrame):
+    def append(self, worksheet: str, row: pd.DataFrame):
         ws = self._sheet.worksheet(worksheet)
-        ws.clear()
-        ws.update([data.columns.tolist()] + data.fillna("").values.tolist())
+        ws.append_row(row.fillna("").iloc[0].tolist())
+
+
+class _LocalGSheetsConn:
+    """Thin wrapper around GSheetsConnection that adds an append method."""
+
+    def __init__(self):
+        from streamlit_gsheets import GSheetsConnection
+        self._conn = st.connection("gsheets", type=GSheetsConnection)
+
+    def read(self, worksheet: str, ttl=None) -> pd.DataFrame:
+        return self._conn.read(worksheet=worksheet, ttl=ttl)
+
+    def append(self, worksheet: str, row: pd.DataFrame):
+        existing = self._conn.read(worksheet=worksheet, ttl=0)
+        existing = existing.dropna(how="all")
+        updated = pd.concat([existing, row], ignore_index=True)
+        self._conn.update(worksheet=worksheet, data=updated)
 
 
 def get_gsheets_conn():
     if "GOOGLE_SERVICE_ACCOUNT_JSON" in os.environ:
         return _EnvGSheetsConn()
-    from streamlit_gsheets import GSheetsConnection
-    return st.connection("gsheets", type=GSheetsConnection)
+    return _LocalGSheetsConn()
 
 # Load intro text from file
 with open("intro.txt", "r", encoding="utf-8") as file:
@@ -90,10 +105,6 @@ st.markdown(
 
 # Establish a Google Sheets connection
 conn = get_gsheets_conn()
-
-# Fetch existing survey data
-existing_data = conn.read(worksheet="Responses", ttl=5)
-existing_data = existing_data.dropna(how="all")
 
 # Survey form
 with st.form(key="survey_form"):
@@ -216,7 +227,6 @@ with st.form(key="survey_form"):
             "comments": comments
         }])
 
-        updated_df = pd.concat([existing_data, new_response], ignore_index=True)
-        conn.update(worksheet="Responses", data=updated_df)
+        conn.append(worksheet="Responses", row=new_response)
 
         st.success("Your response has been recorded! Thank you.")
